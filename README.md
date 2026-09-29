@@ -5,4 +5,4 @@
 | Padrón | Apellidos, Nombres      | Fecha    | Deadline |
 | :----- | :---------------------  | :------: | :-------: |
 | 108752 | Pollero, Johann Leandro |          | Semana 08 |
-| 112199 | Rivarola Giovannini, Ignacio Martin | |
+
