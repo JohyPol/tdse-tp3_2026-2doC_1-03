@@ -2,7 +2,7 @@ Realizar el *porting* (adaptación) de un controlador para un display LCD basán
 
 Aquí tienes una guía estructurada paso a paso para tu Trabajo Práctico, cubriendo la configuración del sistema, el modelado y la implementación en C.
 
----
+
 
 ## 1. System Setup (Capa de Abstracción de Hardware)
 
@@ -22,7 +22,7 @@ uint32_t LCD_HAL_GetTickMs(void);        // Temporizador del sistema (millis)
 
 Al hacer esto, cuando cambies de microcontrolador, **solo reescribirás estas 5 funciones**; el resto de tu máquina de estados quedará intacto.
 
----
+
 
 ## 2. Modeling (Statechart)
 
@@ -36,9 +36,7 @@ Para modelar esto sin bloquear el procesador, definimos los siguientes estados p
 * `STATE_SENDING`: Alternando el pin EN (Enable) para enviar un nibble o byte.
 * `STATE_BUSY_WAIT`: Esperando que pase el tiempo requerido por el comando anterior.
 
-Para ayudarte a visualizar cómo fluye la lógica ante distintos eventos, aquí tienes un simulador interactivo de la máquina de estados:
 
----
 
 ## 3. C Coding (Implementación del Puerto)
 
