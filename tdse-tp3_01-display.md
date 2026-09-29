@@ -135,3 +135,75 @@ void LCD_PrintChar(char c) {
 ```
 
 > **Nota clave:** La función `LCD_Update()` debe ser llamada constantemente desde el bucle infinito `while(1)` de tu función `main()`. Al no tener demoras bloqueantes, el loop corre a máxima velocidad.
+
+<br/>
+<br/>
+El sistema implementa una arquitectura basada en eventos (Event-Triggered System) utilizando un planificador de tareas cooperativo sin sistema operativo (bare-metal).
+
+### Análisis de los archivos de código fuente
+
+* **`app.c`**: Implementa el planificador principal. Define la lista de tareas (`task_test` y `task_display`), las inicializa mediante `app_init()` y las ejecuta periódicamente en el bucle principal `app_update()`. También contabiliza métricas de ejecución, como el número de ejecuciones, y los tiempos de ejecución actual, mejor y peor (LET, BCET, WCET).
+
+
+* **`app_it.c`**: Contiene las rutinas de servicio de interrupción (ISR) del microcontrolador. Incrementa la variable `g_app_tick_cnt` en cada interrupción del temporizador del sistema (SysTick) a través del callback `HAL_SYSTICK_Callback`, gestionando así el tiempo base de la aplicación.
+
+
+* **`systick.c`**: Proporciona la función `systick_delay_us`, la cual genera demoras bloqueantes (busy-waiting) precisas en microsegundos monitoreando directamente los registros del hardware del SysTick.
+
+
+* **`display.h` y `display.c**`: Conforman la capa de abstracción de hardware y el controlador de bajo nivel para el display LCD. `displayInit` envía las secuencias de inicialización en modo de 4 u 8 bits. Las funciones `displayCharPositionWrite` y `displayStringWrite` controlan directamente los pines GPIO (RS, RW, EN y el bus de datos) para enviar instrucciones o caracteres al LCD.
+
+
+* **`task_display_interface.c`**: Funciona como la API pública para interactuar con la tarea del display. Implementa `put_event_task_display`, que copia un mensaje de texto dentro de un buffer de memoria interno (`ddram`), establece el evento a `EV_DSP_UPDATE` y activa una bandera (`flag = true`) para notificar a la máquina de estados que hay nueva información pendiente de ser mostrada.
+
+
+* **`task_test_attribute.h`**: Define la estructura de datos interna `task_test_dta_t`, declarando las variables `tick` y `counter` necesarias para el estado de la tarea de prueba.
+
+
+* **`task_test.c`**: Es la tarea de aplicación o prueba. En `task_test_init`, inicializa sus variables y envía un texto de presentación estático ("LCD Display Test", " Porting C code ") mediante la interfaz del display. Posteriormente, se actualiza llamando a su statechart.
+
+
+* **`task_display.c`**: Es la tarea dedicada a refrescar el LCD mediante una máquina de estados no bloqueante. En `task_display_init`, inicializa el hardware del display en modo de 4 bits y realiza una primera escritura del buffer `ddram` en las filas 0 y 1.
+
+
+
+### Comportamiento de `void task_test_statechart(void)`
+
+Esta función actúa como el núcleo cíclico de la tarea de prueba, ejecutándose periódicamente cada vez que el planificador llama a `task_test_update()`:
+
+* Incrementa el contador interno `counter` en cada única iteración.
+
+
+* Decrementa la variable temporizadora `tick` siempre que su valor sea mayor que `DEL_TEST_XX_MIN` (0).
+
+
+* Cuando `tick` alcanza 0, reinicia su valor asignándole la constante `DEL_TEST_XX_MAX` para comenzar un nuevo ciclo de demora.
+
+
+* En ese instante de reinicio de tiempo, envía a la interfaz del display la cadena predeterminada "Test Nro: ******" posicionándola al inicio de la fila 1.
+
+
+* Inmediatamente después, calcula el número actual del test dividiendo `counter` entre `DEL_TEST_XX_MAX`, convierte este valor a texto y lo envía a la columna 10 de la fila 1, sobrescribiendo los asteriscos de la instrucción previa.
+
+
+
+### Comportamiento de `void task_display_statechart(void)`
+
+Esta función procesa el vaciado de los buffers de texto al hardware real basándose en una máquina de estados finitos que previene el uso de código secuencial bloqueante a nivel de aplicación superior:
+
+* Inicia su ciclo en el estado por defecto `ST_DSP_IDLE`.
+
+
+* Mientras se encuentra en `ST_DSP_IDLE`, monitorea constantemente las variables de notificación; si `flag` equivale a `true` y el evento es `EV_DSP_UPDATE`, realiza la transición hacia el estado `ST_DSP_UPDATE`.
+
+
+* Al ingresar al estado `ST_DSP_UPDATE`, desactiva inmediatamente la bandera estableciendo `flag = false`.
+
+
+* Posiciona el cursor físico en la fila 0, columna 0 usando el driver subyacente y escribe la cadena de texto completa almacenada en el buffer `ddram[0]`.
+
+
+* Repite el procedimiento posicionando el cursor en la fila 1, columna 0 e imprimiendo el contenido de `ddram[1]`.
+
+
+* Al finalizar la transferencia de datos, retorna el estado actual de la máquina a `ST_DSP_IDLE` para aguardar futuras actualizaciones.
