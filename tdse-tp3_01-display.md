@@ -39,6 +39,9 @@ Para modelar esto sin bloquear el procesador, definimos los siguientes estados p
 * `STATE_SENDING`: Alternando el pin EN (Enable) para enviar un nibble o byte.
 * `STATE_BUSY_WAIT`: Esperando que pase el tiempo requerido por el comando anterior.
 
+Para ayudarte a visualizar cómo fluye la lógica ante distintos eventos, aquí tienes un simulador interactivo de la máquina de estados:
+
+<img width="1416" height="1334" alt="image" src="https://github.com/user-attachments/assets/2721f708-0c65-4071-9bdd-2581a5887e6c" />
 
 
 ## 3. C Coding (Implementación del Puerto)
