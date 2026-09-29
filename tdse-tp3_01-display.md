@@ -1,7 +1,10 @@
 Realizar el *porting* (adaptación) de un controlador para un display LCD basándose en máquinas de estado (statecharts) es una de las mejores prácticas en sistemas embebidos. Al evitar funciones bloqueantes (como los clásicos `delay()`), permites que el microcontrolador atienda otras tareas mientras el LCD procesa la información.
 
+<img width="2048" height="1365" alt="image" src="https://github.com/user-attachments/assets/a8e3ba9d-2003-4dd6-8f10-9a198c52cb35" />
+<sub> Display LCD 16x2 estándar. Fuente: LexaAdams / Getty Images </sub>
+<br/>
+<br/>
 Aquí tienes una guía estructurada paso a paso para tu Trabajo Práctico, cubriendo la configuración del sistema, el modelado y la implementación en C.
-
 
 
 ## 1. System Setup (Capa de Abstracción de Hardware)
