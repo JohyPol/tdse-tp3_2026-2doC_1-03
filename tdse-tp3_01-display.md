@@ -214,17 +214,17 @@ Esta función procesa el vaciado de los buffers de texto al hardware real basán
 
 | task_dta_listt[0] | |  | | 
 | :--- | :---: | :---: | ---: |
-| NOE | 42804 | Fila 1, Celda 3 | Fila 2, Celda 3 |
-| LET | 2 | Fila 2, Celda 3 | Fila 2, Celda 3 |
-| BCET | 2 | Fila 2, Celda 3 | Fila 2, Celda 3 |
-| WCET | 36 | Fila 2, Celda 3 | Fila 2, Celda 3 |
+| NOE [ms] | 42804 | 128054 | 250794 |
+| LET [ms] | 2 | 2 | 2 |
+| BCET [ms] | 2 | 2 | 2 |
+| WCET [ms] | 36 | 37 | 37 |
 
 | task_dta_listt[1] |  | | |
 | :--- | :---: | :---: | ---: |
-| NOE | 42804 | Fila 1, Celda 3 | Fila 2, Celda 3 |
-| LET | 2 | Fila 2, Celda 3 | Fila 2, Celda 3 |
-| BCET | 2 | Fila 2, Celda 3 | Fila 2, Celda 3 |
-| WCET | 6207 | Fila 2, Celda 3 | Fila 2, Celda 3 |
+| NOE [ms] | 42804 | 128054 | 250794 |
+| LET [ms] | 2 | 2 | 2 |
+| BCET [ms] | 2 | 2 | 2 |
+| WCET [ms] | 6207 | 6207 | 6207 |
 
 
 
