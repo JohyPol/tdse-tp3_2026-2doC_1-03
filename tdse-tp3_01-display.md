@@ -212,26 +212,39 @@ Esta función procesa el vaciado de los buffers de texto al hardware real basán
 
 ## Tabla task_dta_list()
 
-| task_dta_listt[0] | |  | | 
+| task_dta_list[0] | |  | | 
 | :--- | :---: | :---: | ---: |
-| NOE [ms] | 42804 | 128054 | 250794 |
-| LET [ms] | 2 | 2 | 2 |
-| BCET [ms] | 2 | 2 | 2 |
-| WCET [ms] | 36 | 37 | 37 |
+| NOE | 42804 | 128054 | 250794 |
+| LET [us] | 2 | 2 | 2 |
+| BCET [us] | 2 | 2 | 2 |
+| WCET [us] | 36 | 37 | 37 |
 
-| task_dta_listt[1] |  | | |
+| task_dta_list[1] |  | | |
 | :--- | :---: | :---: | ---: |
-| NOE [ms] | 42804 | 128054 | 250794 |
-| LET [ms] | 2 | 2 | 2 |
-| BCET [ms] | 2 | 2 | 2 |
-| WCET [ms] | 6207 | 6207 | 6207 |
+| NOE | 42804 | 128054 | 250794 |
+| LET [us] | 2 | 2 | 2 |
+| BCET [us] | 2 | 2 | 2 |
+| WCET [us] | 6207 | 6207 | 6207 |
 
 
+### Análisis temporal
+* Se realizaron tres mediciones del tiempo de ejecución de las tareas. El parámetro NOE representa la cantidad de ejecuciones realizadas, mientras que LET, BCET y WCET se expresan en microsegundos.
 
+* Para task_dta_list[0], se obtuvo un WCET comprendido entre 36 y 37 µs en las tres mediciones. Este valor resulta considerablemente menor al período de ejecución del sistema, de 1000 µs, por lo que la tarea cumple con la restricción temporal.
 
+* Para task_dta_list[1], el LET y el BCET fueron de 2 µs, mientras que el WCET alcanzó los 6207 µs. Este último valor supera el período de 1000 µs:
 
+$$ WCET_1 = 6207\,\mu s > 1000\,\mu s $$
 
+* Por lo tanto, en el peor caso, task_dta_list[1] no logra finalizar dentro del período de ejecución de 1 ms. Considerando ambas tareas, el peor caso acumulado resulta:
 
+$$ WCET_{total}=37+6207=6244\,\mu s $$
+
+* que también supera ampliamente los 1000 µs disponibles por ciclo.
+
+* La diferencia observada entre el BCET y el WCET de task_dta_list[1] indica que, si bien la tarea normalmente presenta un tiempo de ejecución muy reducido, existen ejecuciones puntuales significativamente más prolongadas. Esto puede estar asociado a las operaciones de actualización del display LCD, que se realizan únicamente en determinados ciclos.
+
+* Finalmente se observa que el sistema no cumple la restricción temporal en el peor caso según las mediciones realizadas.
 
 
 
