@@ -207,3 +207,31 @@ Esta función procesa el vaciado de los buffers de texto al hardware real basán
 
 
 * Al finalizar la transferencia de datos, retorna el estado actual de la máquina a `ST_DSP_IDLE` para aguardar futuras actualizaciones.
+
+
+
+## Tabla task_dta_list()
+
+| task_dta_listt[0] | |  | | 
+| :--- | :---: | :---: | ---: |
+| NOE | 42804 | Fila 1, Celda 3 | Fila 2, Celda 3 |
+| LET | 2 | Fila 2, Celda 3 | Fila 2, Celda 3 |
+| BCET | 2 | Fila 2, Celda 3 | Fila 2, Celda 3 |
+| WCET | 36 | Fila 2, Celda 3 | Fila 2, Celda 3 |
+
+| task_dta_listt[1] |  | | |
+| :--- | :---: | :---: | ---: |
+| NOE | 42804 | Fila 1, Celda 3 | Fila 2, Celda 3 |
+| LET | 2 | Fila 2, Celda 3 | Fila 2, Celda 3 |
+| BCET | 2 | Fila 2, Celda 3 | Fila 2, Celda 3 |
+| WCET | 6207 | Fila 2, Celda 3 | Fila 2, Celda 3 |
+
+
+
+
+
+
+
+
+
+
