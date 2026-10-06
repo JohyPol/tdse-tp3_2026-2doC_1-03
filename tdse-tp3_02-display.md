@@ -1,5 +1,5 @@
 
-## Tabla task_dta_list[]
+## Tabla task_dta_list[ ]
 
 | task_dta_list[0] | Valor | Extra 1 | Extra 2 |
 |---|---|---|---|
