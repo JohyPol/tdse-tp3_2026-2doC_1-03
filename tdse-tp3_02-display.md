@@ -14,3 +14,7 @@
 | LET | 2 | 2 | 2 |
 | BCET | 2 | 2 | 2 |
 | WCET | 401 | 401 | 401 |
+
+
+Analizar si cumplen con las restricciones temporales del ejecutor cíclico: pendiente
+Unidades de tabla: pendiente
